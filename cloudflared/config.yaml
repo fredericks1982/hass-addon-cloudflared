@@ -2,7 +2,7 @@
 name: Cloudflare Tunnel client
 version: "2024.10.0"
 slug: cloudflared
-description: Client for Cloudflare Tunnel, a tunneling daemon that proxies traffic from the Cloudflare network to your origins.
+description: Client for Cloudflare Tunnel, a tunneling daemon that proxies traffic from the Cloudflare network to your origins
 arch:
   - armhf
   - armv7
@@ -13,8 +13,6 @@ url: "https://github.com/fredericks1982/hass-addon-cloudflared"
 startup: system
 host_network: true
 init: false
-#map:
-#  - share:rw
 options:
   token: ""
 schema:

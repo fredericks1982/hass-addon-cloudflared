@@ -33,11 +33,8 @@ RUN \
 # Copy root filesystem
 COPY rootfs /
 
-# Create necessary directories
-RUN mkdir -p /etc/cloudflared
-
 # Set the working directory
-WORKDIR /etc/cloudflared
+WORKDIR /
 
 # Set the default command
-# CMD ["cloudflared", "tunnel", "--no-autoupdate", "run", "--token", "eyJhIjoiZTNkMTFlNDZiOGU4MzZhZGY1NWM4NjRmODk5M2NlNDEiLCJ0IjoiNmRlYmYwNDEtMzc0OC00OTllLWIzNTktMDY4ZGIyZDA5MzI4IiwicyI6Ik1EUTJNbVJsWVRFdE56UTNOUzAwWWprMExXRTROamN0WkRFNFlXVmtaakV5WTJJeCJ9"]
+# CMD ["cloudflared", "tunnel", "--no-autoupdate", "run", "--token", "kjsoiZIUkMTFl..."]

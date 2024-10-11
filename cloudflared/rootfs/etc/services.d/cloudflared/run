@@ -1,10 +1,8 @@
 #!/usr/bin/with-contenv bashio
 # ==============================================================================
-# Start the example service
+# Start the addon service
 # s6-overlay docs: https://github.com/just-containers/s6-overlay
 # ==============================================================================
-
-xz zjkjzh fkjashdakd
 
 # Declare variables
 declare client_token
@@ -16,8 +14,4 @@ client_token=$(bashio::config 'token')
 bashio::log.info "Starting the cloudflare tunnel daemon..."
 
 # Use the client_token variable in the cloudflared command
-cloudflared tunnel --no-autoupdate run --token "${client_token}"
-
-bashio::log.info "Cloudflare tunnel daemon started!"
-
-# exec /usr/bin/my_program
+exec cloudflared tunnel --no-autoupdate run --token "${client_token}"
