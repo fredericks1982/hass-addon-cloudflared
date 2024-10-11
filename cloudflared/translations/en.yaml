@@ -1,0 +1,4 @@
+configuration:
+  token:
+    name: Token
+    description: The Cloudflare Tunnel client token.
