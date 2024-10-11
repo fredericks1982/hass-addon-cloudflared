@@ -35,6 +35,3 @@ COPY rootfs /
 
 # Set the working directory
 WORKDIR /
-
-# Set the default command
-# CMD ["cloudflared", "tunnel", "--no-autoupdate", "run", "--token", "kjsoiZIUkMTFl..."]

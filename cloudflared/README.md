@@ -1,6 +1,4 @@
-# Home Assistant Add-on: Example add-on
-
-_Example add-on to use as a blueprint for new add-ons._
+# Cloudflare Tunnel client
 
 ![Supports aarch64 Architecture][aarch64-shield]
 ![Supports amd64 Architecture][amd64-shield]
@@ -13,3 +11,20 @@ _Example add-on to use as a blueprint for new add-ons._
 [armhf-shield]: https://img.shields.io/badge/armhf-yes-green.svg
 [armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
 [i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
+
+Client for Cloudflare Tunnel, a tunneling daemon that proxies traffic from the
+Cloudflare network to your origins. It simplifies the process of
+setting up and managing a secure connection between your local services and
+Cloudflare's network.
+
+*Cloudflare Tunnel* provides a secure way to connect your services to Cloudflare without
+exposing an external IP address. It establishes an encrypted tunnel between your
+infrastructure and Cloudflare's edge, routing traffic through this tunnel rather than
+over the public internet. This allows you to securely expose web servers, APIs, and
+other services to the internet without opening inbound ports in your firewall.
+
+Key features:
+- Secure: End-to-end encrypted connections
+- Easy setup: No need for complex firewall rules or IP whitelisting
+- Flexible: Can expose HTTP, TCP, and UDP services
+- Scalable: Supports load balancing and high availability configurations

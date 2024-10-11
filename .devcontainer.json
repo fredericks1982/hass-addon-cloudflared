@@ -9,9 +9,7 @@
   "runArgs": [
     "-e",
     "GIT_EDITOR=code --wait",
-    "--privileged",
-    "--network",
-    "host"
+    "--privileged"
   ],
   "remoteUser": "root",
   "containerEnv": {
