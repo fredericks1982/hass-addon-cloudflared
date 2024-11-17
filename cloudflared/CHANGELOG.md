@@ -1,6 +1,6 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
-## 2024.11.2
+## 2024.11.3
 
 - Disabled apparmor profile
 
