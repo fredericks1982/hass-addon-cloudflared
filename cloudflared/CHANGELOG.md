@@ -2,7 +2,7 @@
 
 ## 2024.11.0
 
-- Bump to Cloudflared 2024.11.0 Docker image
+- Bump to version 2024.11.0 of the [cloudflared docker image](https://hub.docker.com/r/cloudflare/cloudflared)
 
 ## 2024.10.0
 

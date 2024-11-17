@@ -4,8 +4,11 @@ version: "2024.11.0"
 slug: cloudflared
 description: Client for Cloudflare Tunnel
 arch:
+  - armhf
+  - armv7
   - aarch64
   - amd64
+  - i386
 url: "https://github.com/fredericks1982/hass-addon-cloudflared"
 startup: system
 host_network: true
@@ -14,5 +17,4 @@ options:
   token: ""
 schema:
   token: "str"
-#image: "ghcr.io/home-assistant/{arch}-addon-example"
 panel_icon: mdi:router-network

@@ -7,11 +7,11 @@
 # Declare variables
 declare client_token
 
-## Get the 'message' key from the user config options.
+## Get the user config options.
 client_token=$(bashio::config 'token')
 
-## Print the message the user supplied, defaults to "Hello World..."
 bashio::log.info "Starting the cloudflare tunnel daemon..."
 
-# Use the client_token variable in the cloudflared command
-exec cloudflared tunnel --no-autoupdate run --token "${client_token}"
+#exec /usr/bin/my_program
+exec tunnel --no-autoupdate run --token "${client_token}" 1>&1 2>&1
+# exec cloudflared tunnel --no-autoupdate run --token "${client_token}" 1>&1 2>&1
