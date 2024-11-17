@@ -1,7 +1,9 @@
 # Cloudflare Tunnel client
 
 Client for Cloudflare Tunnel, a tunneling daemon that proxies traffic from the
-Cloudflare network to your origins.
+Cloudflare network to your origins. The tunnels are configured in your
+[Cloudflare Zero Trust](https://one.dash.cloudflare.com/) dashboard, under
+*Networks > Tunnels*.
 
 ![Supports aarch64 Architecture][aarch64-shield]
 ![Supports amd64 Architecture][amd64-shield]

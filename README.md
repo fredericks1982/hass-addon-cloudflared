@@ -22,6 +22,9 @@ and Cloudflare's edge, routing traffic through this tunnel rather than over the 
 internet. This allows you to securely expose web servers, APIs, and other services to
 the internet without opening inbound ports in your firewall.
 
+The tunnels are configured in your
+[Cloudflare Zero Trust](https://one.dash.cloudflare.com/) dashboard, under
+*Networks > Tunnels*.
 <!--
 
 Notes to developers after forking or using the github template feature:
