@@ -1,5 +1,9 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2024.11.1
+
+- Updated Dockerfile content
+
 ## 2024.11.0
 
 - Bump to version 2024.11.0 of the [cloudflared docker image](https://hub.docker.com/r/cloudflare/cloudflared)

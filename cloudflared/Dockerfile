@@ -32,4 +32,4 @@ COPY rootfs /
 # Set the working directory
 WORKDIR /
 
-ENTRYPOINT ["cloudflared" "--no-autoupdate"]
+#ENTRYPOINT ["/usr/local/bin/cloudflared" "--no-autoupdate"]
