@@ -1,0 +1,12 @@
+FROM cloudflare/cloudflared:2024.11.0-arm64
+
+LABEL \
+  io.hass.version="2024.11.0" \
+  io.hass.type="addon" \
+  io.hass.arch="aarch64"
+
+# Copy root filesystem
+COPY rootfs /
+
+# Set the working directory
+WORKDIR /
