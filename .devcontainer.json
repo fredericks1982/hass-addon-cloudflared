@@ -1,5 +1,5 @@
 {
-  "name": "Example Home Assistant add-on repository",
+  "name": "Cloudflare Tunnel Home Assistant add-on repository",
   "image": "ghcr.io/home-assistant/devcontainer:addons",
   "appPort": [
     "7123:8123",
@@ -32,6 +32,7 @@
     "editor.formatOnPaste": false,
     "editor.formatOnSave": true,
     "editor.formatOnType": true,
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
+    "asd": true
   }
 }

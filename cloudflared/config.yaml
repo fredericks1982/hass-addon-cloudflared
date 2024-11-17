@@ -1,14 +1,11 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Cloudflare Tunnel client
-version: "2024.10.0"
+version: "2024.11.0"
 slug: cloudflared
 description: Client for Cloudflare Tunnel
 arch:
-  - armhf
-  - armv7
   - aarch64
   - amd64
-  - i386
 url: "https://github.com/fredericks1982/hass-addon-cloudflared"
 startup: system
 host_network: true

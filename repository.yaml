@@ -1,4 +1,3 @@
-# https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
-name: Example Home Assistant add-on repository
-url: 'https://github.com/home-assistant/addons-example'
-maintainer: Awesome Maintainer <awesome@example.com>
+name: Cloudflare Tunnel add-on repository
+url: 'https://github.com/fredericks1982/hass-addon-cloudflared'
+maintainer: fredericks1982 <fredericks1982@gmail.com>

@@ -1,10 +1,7 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-dockerfile
 build_from:
-  aarch64: "ghcr.io/home-assistant/aarch64-base:latest"
-  amd64: "ghcr.io/home-assistant/amd64-base:latest"
-  armhf: "ghcr.io/home-assistant/armhf-base:latest"
-  armv7: "ghcr.io/home-assistant/armv7-base:latest"
-  i386: "ghcr.io/home-assistant/i386-base:latest"
+  aarch64: "cloudflare/cloudflared:2024.11.0-arm64"
+  amd64: "cloudflare/cloudflared:2024.11.0-amd64"
 labels:
   org.opencontainers.image.title: "Home Assistant Add-on: Cloudflare Tunnel client"
   org.opencontainers.image.description: "Client for Cloudflare Tunnel, a tunneling daemon that proxies traffic from the Cloudflare network to your origins."
