@@ -2,6 +2,10 @@
 
 ## 2024.11.2
 
+- Disabled apparmor profile
+
+## 2024.11.2
+
 - Improved security score (apparmor profile)
 
 ## 2024.11.1
