@@ -1,5 +1,9 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2024.11.2
+
+- Improved security score (apparmor profile)
+
 ## 2024.11.1
 
 - Updated Dockerfile content
