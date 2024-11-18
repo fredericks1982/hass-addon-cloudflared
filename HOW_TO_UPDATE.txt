@@ -1,3 +1,4 @@
 - cloudflared/Dockerfile: update the cloudflared release URL in the curl command (line 23)
 - cloudflared/config.yaml: update the version number (line 3)
 - cloudflared/CHANGELOG.md: track the latest changes
+- Create a tag, push it, and create a GitHub release
