@@ -1,12 +1,9 @@
 # Build stage
-FROM debian:stable-slim AS builder
-
-# Install curl
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+FROM alpine:latest AS builder
 
 # Download tempio
 ARG TEMPIO_VERSION BUILD_ARCH
-RUN curl -sSLf -o /tempio \
+RUN wget -q -O /tempio \
     "https://github.com/home-assistant/tempio/releases/download/${TEMPIO_VERSION}/tempio_${BUILD_ARCH}" \
     && chmod +x /tempio
 
@@ -20,7 +17,7 @@ RUN CLOUDFLARED_ARCH=$(case "${BUILD_ARCH}" in \
         *) echo "unsupported" ;; \
     esac) && \
     if [ "$CLOUDFLARED_ARCH" != "unsupported" ]; then \
-        curl -sSL -o /cloudflared \
+        wget -q -O /cloudflared \
             "https://github.com/cloudflare/cloudflared/releases/download/2024.11.0/cloudflared-linux-${CLOUDFLARED_ARCH}" && \
         chmod +x /cloudflared; \
     else \
