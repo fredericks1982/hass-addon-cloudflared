@@ -19,6 +19,7 @@
 
 ## Git Workflow
 - Commit messages should be clear and descriptive
+- Never include AI assistant references in commits, PRs, or code comments
 - Create tags for releases and GitHub releases
 - Branch from main for feature development
 - PR workflow uses automated lint and build testing
