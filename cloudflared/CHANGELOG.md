@@ -1,5 +1,13 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2025.2.2
+
+- Minor changes to documentation
+
+## 2025.2.1
+
+- Bump cloudflared to 2025.2.1
+
 ## 2024.11.4
 
 - Added documentation
