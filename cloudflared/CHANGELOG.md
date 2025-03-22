@@ -1,5 +1,9 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2025.2.1
+
+- Bump to version 2025.2.1 of cloudflared
+
 ## 2024.11.4
 
 - Added documentation

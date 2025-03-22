@@ -18,7 +18,7 @@ RUN CLOUDFLARED_ARCH=$(case "${BUILD_ARCH}" in \
     esac) && \
     if [ "$CLOUDFLARED_ARCH" != "unsupported" ]; then \
         wget -q -O /cloudflared \
-            "https://github.com/cloudflare/cloudflared/releases/download/2024.11.0/cloudflared-linux-${CLOUDFLARED_ARCH}" && \
+            "https://github.com/cloudflare/cloudflared/releases/download/2025.2.1/cloudflared-linux-${CLOUDFLARED_ARCH}" && \
         chmod +x /cloudflared; \
     else \
         echo "Unsupported architecture: ${BUILD_ARCH}" && exit 1; \
