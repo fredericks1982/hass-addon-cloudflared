@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Cloudflare Tunnel client
-version: "2025.2.2"
+version: "2025.4.0"
 slug: cloudflared
 description: Client for Cloudflare Tunnel
 arch:
