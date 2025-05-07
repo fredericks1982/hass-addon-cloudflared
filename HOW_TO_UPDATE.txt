@@ -2,4 +2,4 @@
 - cloudflared/config.yaml: update the version number (line 3)
 - cloudflared/CHANGELOG.md: track the latest changes
 - Create a tag, push it, and create a GitHub release
-  (https://github.com/fredericks1982/hass-addon-cloudflared/releases)
+  (https://github.com/fredericks1982/hass-addon-cloudflared/releases) 
