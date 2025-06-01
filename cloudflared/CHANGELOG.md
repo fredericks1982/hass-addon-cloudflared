@@ -1,5 +1,11 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2025.5.0
+
+- Bump cloudflared to 2025.5.0
+- Add --edge-ip-version 4 flag to force IPv4 connections
+- Add --retries 7 flag to improve connection stability
+
 ## 2025.4.2
 
 - Bump cloudflared to 2025.4.2

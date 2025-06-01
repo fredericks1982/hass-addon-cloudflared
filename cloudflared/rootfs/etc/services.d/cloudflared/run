@@ -12,4 +12,4 @@ client_token=$(bashio::config 'token')
 
 bashio::log.info "Starting the cloudflare tunnel daemon..."
 
-exec cloudflared tunnel --no-autoupdate run --token "${client_token}"
+exec cloudflared tunnel --no-autoupdate --edge-ip-version 4 --retries 7 run --token "${client_token}"
