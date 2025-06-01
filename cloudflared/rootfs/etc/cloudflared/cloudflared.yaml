@@ -1,0 +1,2 @@
+originRequest: # Top-level configuration
+  connectTimeout: 45s

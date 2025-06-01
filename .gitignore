@@ -67,3 +67,5 @@ junit.xml
 
 #Backup files
 *.bak
+
+.claude

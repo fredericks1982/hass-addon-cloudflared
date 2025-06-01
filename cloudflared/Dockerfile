@@ -32,4 +32,8 @@ COPY rootfs /
 # Set the working directory
 WORKDIR /
 
+# Disable autoupdate and prefer IPv4 by default
+ENV NO_AUTOUPDATE=true \
+    TUNNEL_EDGE_IP_VERSION=4
+
 #ENTRYPOINT ["/usr/local/bin/cloudflared" "--no-autoupdate"]
