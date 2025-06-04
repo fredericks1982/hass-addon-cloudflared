@@ -17,6 +17,8 @@ jobs:
   init:
     runs-on: ubuntu-latest
     name: Initialize builds
+    permissions:
+      contents: read
     outputs:
       changed_addons: ${{ steps.changed_addons.outputs.addons }}
       changed: ${{ steps.changed_addons.outputs.changed }}
@@ -34,12 +36,15 @@ jobs:
 
       - name: Get changed add-ons
         id: changed_addons
+        env:
+          ADDONS: ${{ steps.addons.outputs.addons }}
+          CHANGED_FILES: ${{ steps.changed_files.outputs.all }}
         run: |
           declare -a changed_addons
-          for addon in ${{ steps.addons.outputs.addons }}; do
-            if [[ "${{ steps.changed_files.outputs.all }}" =~ $addon ]]; then
-              for file in ${{ env.MONITORED_FILES }}; do
-                  if [[ "${{ steps.changed_files.outputs.all }}" =~ $addon/$file ]]; then
+          for addon in ${ADDONS}; do
+            if [[ "${CHANGED_FILES}" =~ $addon ]]; then
+              for file in ${MONITORED_FILES}; do
+                  if [[ "${CHANGED_FILES}" =~ $addon/$file ]]; then
                     if [[ ! "${changed_addons[@]}" =~ $addon ]]; then
                       changed_addons+=("\"${addon}\",");
                     fi
