@@ -9,6 +9,7 @@ on:
       - main
   schedule:
     - cron: "0 0 * * *"
+  workflow_dispatch:
 
 jobs:
   find:
@@ -39,3 +40,9 @@ jobs:
         uses: frenck/action-addon-linter@v2.18
         with:
           path: "./${{ matrix.path }}"
+
+      - name: 🐚 Run shellcheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+          shellcheck $(find "./${{ matrix.path }}/rootfs/etc/services.d" -type f)
