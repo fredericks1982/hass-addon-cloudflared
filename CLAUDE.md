@@ -69,10 +69,12 @@ cloudflared/
 
 ## Releasing / Updating Cloudflared
 
-1. Switch to the `future` branch.
-2. Update the cloudflared download URL version in `cloudflared/Dockerfile` (the `curl` line).
-3. Update `version` in `cloudflared/config.yaml` to match. Use CalVer: `YYYY.MM.MICRO` (e.g. `2025.6.0`).
-4. Add a changelog entry in `cloudflared/CHANGELOG.md`.
-5. Commit, push, and verify CI passes.
-6. Merge `future` → `main` (this triggers the real build and publishes the image).
-7. Create a git tag matching the version, push it, and open a GitHub release at `https://github.com/fredericks1982/hass-addon-cloudflared/releases`.
+1. Check https://github.com/cloudflare/cloudflared/releases/ to retrieve the latest cloudflared version.
+2. Prompt the user for confirmation on which version to upgrade to.
+3. Switch to the `future` branch.
+4. Update the cloudflared download URL version in `cloudflared/Dockerfile` (the `curl` line).
+5. Update `version` in `cloudflared/config.yaml` to match. Use CalVer: `YYYY.MM.MICRO` (e.g. `2025.6.0`).
+6. Add a changelog entry in `cloudflared/CHANGELOG.md`.
+7. Commit, push, and verify CI passes.
+8. Merge `future` → `main` (this triggers the real build and publishes the image).
+9. Create a git tag matching the version, push it, and open a GitHub release at `https://github.com/fredericks1982/hass-addon-cloudflared/releases`.
