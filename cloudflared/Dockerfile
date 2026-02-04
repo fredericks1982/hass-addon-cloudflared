@@ -21,7 +21,7 @@ RUN \
     esac) && \
     if [ "$CLOUDFLARED_ARCH" != "unsupported" ]; then \
         curl -sSL -o /usr/local/bin/cloudflared \
-            "https://github.com/cloudflare/cloudflared/releases/download/2025.5.0/cloudflared-linux-${CLOUDFLARED_ARCH}" && \
+            "https://github.com/cloudflare/cloudflared/releases/download/2026.1.2/cloudflared-linux-${CLOUDFLARED_ARCH}" && \
         chmod +x /usr/local/bin/cloudflared; \
     else \
         echo "Unsupported architecture: ${BUILD_ARCH}" && exit 1; \
