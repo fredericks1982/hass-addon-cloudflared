@@ -1,25 +1,78 @@
-# Cloudflared Add-on Development Guide
+# CLAUDE.md
 
-## Build & Test Commands
-- Lint: `frenck/action-addon-linter` (via Github Actions)
-- Build: `home-assistant/builder` with args: `--test --[arch] --target /data/cloudflared --addon`
-- Local build testing: Use Home Assistant development environment
-- Update procedure: See HOW_TO_UPDATE.txt
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Code Style Guidelines
-- Follow Home Assistant add-on conventions
-- Docker best practices for multi-stage builds
-- Shell scripts should use bashio for HA integration
-- Use descriptive variable names prefixed with their type
-- Always quote shell variables and command substitutions
-- Follow CalVer versioning: YYYY.MM.MICRO
-- Keep logs informative but concise
-- Proper error handling in shell scripts
-- Document all configuration options thoroughly
+---
 
-## Git Workflow
-- Commit messages should be clear and descriptive
-- Never include references to Claude or any AI assistant in the comments for commits, PRs, or code
-- Create tags for releases and GitHub releases
-- Branch from main for feature development
-- PR workflow uses automated lint and build testing
+## Git & Commit Rules
+
+- Never include references to Claude or any AI assistant in commit messages, PR descriptions, or code comments.
+- Branch from `main` for feature development; use the `future` branch for version-bump work (see Releasing below).
+- PRs to `main` trigger automated lint and build checks.
+
+## CI — Lint & Build
+
+There is no local lint or build command. Both run exclusively in GitHub Actions:
+
+- **Lint** (`.github/workflows/lint.yaml`): runs `frenck/action-addon-linter` on each addon directory found by `home-assistant/actions/helpers/find-addons`, then runs `shellcheck` on every file under `rootfs/etc/services.d/`.
+- **Build** (`.github/workflows/builder.yaml`): triggered only when one of the *monitored files* (`build.yaml`, `config.yaml`, `Dockerfile`, or anything under `rootfs/`) changes. Builds all five architectures (`aarch64`, `amd64`, `armhf`, `armv7`, `i386`) using `home-assistant/builder`. On `main` push the image is published to `ghcr.io/fredericks1982/{arch}-addon-cloudflared`; on PRs the build uses `--test` only (no publish).
+
+## Local Development (Devcontainer)
+
+The repo ships a devcontainer (`.devcontainer.json`) based on `ghcr.io/home-assistant/devcontainer:addons`. Open the repo in that container to get a full Home Assistant Supervisor environment with the addon auto-discovered as a local addon.
+
+VSCode tasks in `.vscode/tasks.json` provide three one-click actions for the `cloudflared` addon:
+
+| Task | What it does |
+|---|---|
+| **Start Home Assistant** | Runs `supervisor_run` (do this first) |
+| **Start Addon** | Stops then starts `local_cloudflared`; tails its Docker logs |
+| **Rebuild and Start Addon** | Rebuilds the image, starts, and tails logs |
+
+**Important:** While developing locally, comment out the `image:` key in `cloudflared/config.yaml` so Supervisor builds from the local Dockerfile instead of pulling the published image. Remember to restore it before merging to `main`.
+
+## Architecture Overview
+
+This is a single-addon repository. Everything addon-related lives under `cloudflared/`.
+
+```
+cloudflared/
+├── Dockerfile          # Pulls tempio + cloudflared binary; copies rootfs
+├── build.yaml          # Base images per arch; tempio version; OCI labels
+├── config.yaml         # HA addon manifest: version, schema, options, image
+├── rootfs/
+│   └── etc/
+│       ├── cloudflared/
+│       │   └── cloudflared.yaml   # Static cloudflared origin config (connectTimeout)
+│       └── services.d/
+│           └── cloudflared/
+│               ├── run            # s6-overlay: starts the tunnel daemon
+│               └── finish         # s6-overlay: halts supervision on non-zero exit
+├── translations/en.yaml           # UI labels for the config option
+├── DOCS.md             # User-facing addon documentation (rendered in HA UI)
+└── CHANGELOG.md        # CalVer release notes
+```
+
+**Process supervision:** The container runs under [s6-overlay](https://github.com/just-containers/s6-overlay). The `run` script is the entry point; it reads the token via `bashio::config`, then `exec`s `cloudflared tunnel run`. If the process exits with a non-zero code the `finish` script halts the container (Supervisor's watchdog will restart it).
+
+**Templating:** [tempio](https://github.com/home-assistant/tempio) is installed in the image (version pinned in `build.yaml`) but is not currently used by this addon. It is available if config-file templating is needed in the future.
+
+**Arch mapping in the Dockerfile:** Home Assistant build arches do not match Cloudflare's release naming. The Dockerfile maps them:
+
+| HA arch | Cloudflare binary suffix |
+|---|---|
+| amd64 | amd64 |
+| i386 | 386 |
+| armhf | arm |
+| armv7 | arm |
+| aarch64 | arm64 |
+
+## Releasing / Updating Cloudflared
+
+1. Switch to the `future` branch.
+2. Update the cloudflared download URL version in `cloudflared/Dockerfile` (the `curl` line).
+3. Update `version` in `cloudflared/config.yaml` to match. Use CalVer: `YYYY.MM.MICRO` (e.g. `2025.6.0`).
+4. Add a changelog entry in `cloudflared/CHANGELOG.md`.
+5. Commit, push, and verify CI passes.
+6. Merge `future` → `main` (this triggers the real build and publishes the image).
+7. Create a git tag matching the version, push it, and open a GitHub release at `https://github.com/fredericks1982/hass-addon-cloudflared/releases`.
