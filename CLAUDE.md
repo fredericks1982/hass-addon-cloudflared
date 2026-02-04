@@ -86,5 +86,9 @@ cloudflared/
 5. Update `version` in `cloudflared/config.yaml` to match. Use CalVer: `YYYY.MM.MICRO` (e.g. `2025.6.0`).
 6. Add a changelog entry in `cloudflared/CHANGELOG.md`.
 7. Commit, push, and verify CI passes.
-8. Merge `future` → `main` (this triggers the real build and publishes the image).
-9. Create a git tag matching the version, push it, and open a GitHub release at `https://github.com/fredericks1982/hass-addon-cloudflared/releases`.
+8. Merge `future` → `main` (this triggers the real build and publishes the image). **Do not delete the `future` branch** — it is a persistent branch used for all version-bump work.
+9. Create a git tag matching the version, push it, and open a GitHub release at `https://github.com/fredericks1982/hass-addon-cloudflared/releases`. Include a link to the changelog in the release notes:
+   ```
+   ## Full Changelog
+   See [CHANGELOG.md](cloudflared/CHANGELOG.md) for complete details.
+   ```
