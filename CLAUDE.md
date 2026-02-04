@@ -10,6 +10,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Branch from `main` for feature development; use the `future` branch for version-bump work (see Releasing below).
 - PRs to `main` trigger automated lint and build checks.
 
+### Standard PR Workflow
+
+1. Create a dedicated branch from `main` (e.g., `docs/update-readme`, `fix/token-validation`).
+2. Stage and commit changes with a clear, descriptive message.
+3. Push the branch to `origin` with `-u` to set upstream tracking.
+4. Open a PR targeting `main` using `gh pr create`.
+5. Squash-merge the PR using `gh pr merge <number> --squash`.
+6. Delete the remote branch: `git push origin --delete <branch>`.
+7. Switch to `main`, pull, and force-delete the local branch: `git branch -D <branch>`.
+
 ## CI — Lint & Build
 
 There is no local lint or build command. Both run exclusively in GitHub Actions:
