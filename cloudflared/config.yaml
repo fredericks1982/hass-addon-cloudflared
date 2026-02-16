@@ -16,5 +16,3 @@ options:
 schema:
   token: "str"
 panel_icon: mdi:router-network
-stage: stable
-backup: hot
