@@ -72,8 +72,9 @@ VSCode tasks in `.vscode/tasks.json` provide three one-click actions for the `cl
 | **Start Home Assistant** | Runs `supervisor_run` (do this first) |
 | **Start Addon** | Stops then starts `local_cloudflared`; tails its Docker logs |
 | **Rebuild and Start Addon** | Rebuilds the image, starts, and tails logs |
+| **Local Test** | Runs `scripts/local-test.sh` (comments out `image:`, rebuilds, tails logs, restores on exit) |
 
-**Important:** While developing locally, comment out the `image:` key in `cloudflared/config.yaml` so Supervisor builds from the local Dockerfile instead of pulling the published image. Remember to restore it before merging to `main`.
+**Local testing:** Run `scripts/local-test.sh` inside the devcontainer. It comments out the `image:` key in `config.yaml`, rebuilds and starts the addon, and tails the logs. Press Ctrl+C when done — the script restores `config.yaml` automatically via a trap. A "Local Test" VSCode task is also available in the command palette.
 
 ## Architecture Overview
 
@@ -115,10 +116,11 @@ cloudflared/
 5. Update `version` in `cloudflared/config.yaml` to match. Use CalVer: `YYYY.MM.MICRO` (e.g. `2025.6.0`).
 6. Add a changelog entry in `cloudflared/CHANGELOG.md`.
 7. Commit, push, and verify CI passes.
-8. Create a PR from `future` → `main` using `gh pr create --base main --head future`. Wait for CI to pass, then merge with `gh pr merge --squash`. This triggers the real build and publishes the image. **Do not delete the `future` branch** — it is a persistent branch used for all version-bump work.
-9. Create a git tag matching the version, push it, and open a GitHub release at `https://github.com/fredericks1982/hass-addon-cloudflared/releases`. Include a link to the changelog in the release notes:
-   ```
-   ## Full Changelog
-   See [CHANGELOG.md](cloudflared/CHANGELOG.md) for complete details.
-   ```
-10. Sync `future` with `main` to keep them aligned: `git checkout future && git merge main --no-edit && git push origin future`. This ensures both branches have identical content for the next release cycle.
+8. *(Optional but recommended)* Run `scripts/local-test.sh` in the devcontainer to verify the tunnel connects and check logs for errors. Press Ctrl+C when done.
+9. Create a PR from `future` → `main` using `gh pr create --base main --head future`. Wait for CI to pass, then merge with `gh pr merge --squash`. This triggers the real build and publishes the image. **Do not delete the `future` branch** — it is a persistent branch used for all version-bump work.
+10. Create a git tag matching the version, push it, and open a GitHub release at `https://github.com/fredericks1982/hass-addon-cloudflared/releases`. Include a link to the changelog in the release notes:
+    ```
+    ## Full Changelog
+    See [CHANGELOG.md](cloudflared/CHANGELOG.md) for complete details.
+    ```
+11. Sync `future` with `main` to keep them aligned: `git checkout future && git merge main --no-edit && git push origin future`. This ensures both branches have identical content for the next release cycle.

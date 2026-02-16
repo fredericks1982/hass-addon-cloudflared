@@ -45,6 +45,20 @@
         "panel": "new"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Local Test",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/local-test.sh",
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
     }
   ],
   "inputs": [
