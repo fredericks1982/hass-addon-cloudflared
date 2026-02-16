@@ -81,8 +81,8 @@ This is a single-addon repository. Everything addon-related lives under `cloudfl
 
 ```
 cloudflared/
-├── Dockerfile          # Pulls tempio + cloudflared binary; copies rootfs
-├── build.yaml          # Base images per arch; tempio version; OCI labels
+├── Dockerfile          # Pulls cloudflared binary; copies rootfs
+├── build.yaml          # Base images per arch; OCI labels
 ├── config.yaml         # HA addon manifest: version, schema, options, image
 ├── rootfs/
 │   └── etc/
@@ -99,8 +99,6 @@ cloudflared/
 
 **Process supervision:** The container runs under [s6-overlay](https://github.com/just-containers/s6-overlay). The `run` script is the entry point; it reads the token via `bashio::config`, then `exec`s `cloudflared tunnel run`. If the process exits with a non-zero code the `finish` script halts the container (Supervisor's watchdog will restart it).
 
-**Templating:** [tempio](https://github.com/home-assistant/tempio) is installed in the image (version pinned in `build.yaml`) but is not currently used by this addon. It is available if config-file templating is needed in the future.
-
 **Arch mapping in the Dockerfile:** Home Assistant build arches do not match Cloudflare's release naming. The Dockerfile maps them:
 
 | HA arch | Cloudflare binary suffix |
@@ -113,7 +111,7 @@ cloudflared/
 1. Check https://github.com/cloudflare/cloudflared/releases/ to retrieve the latest cloudflared version.
 2. Prompt the user for confirmation on which version to upgrade to.
 3. Switch to the `future` branch.
-4. Update the cloudflared download URL version in `cloudflared/Dockerfile` (the `curl` line).
+4. Update the `CLOUDFLARED_VERSION` build arg default in `cloudflared/Dockerfile`.
 5. Update `version` in `cloudflared/config.yaml` to match. Use CalVer: `YYYY.MM.MICRO` (e.g. `2025.6.0`).
 6. Add a changelog entry in `cloudflared/CHANGELOG.md`.
 7. Commit, push, and verify CI passes.

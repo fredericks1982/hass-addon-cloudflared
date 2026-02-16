@@ -27,10 +27,10 @@ profile cloudflared flags=(attach_disconnected,mediate_deleted) {
   # Access to options.json and other files within your addon
   /data/** rw,
 
-  # Start new profile for service
-  /usr/local/bin/cloudflared cx -> myprogram,
+  # Start new profile for cloudflared
+  /usr/local/bin/cloudflared cx -> cloudflared,
 
-  profile myprogram flags=(attach_disconnected,mediate_deleted) {
+  profile cloudflared flags=(attach_disconnected,mediate_deleted) {
     #include <abstractions/base>
 
     # Receive signals from S6-Overlay
@@ -39,14 +39,34 @@ profile cloudflared flags=(attach_disconnected,mediate_deleted) {
     # Access to options.json and other files within your addon
     /data/** rw,
 
-    # Access to mapped volumes specified in config.json
-    /share/** rw,
+    # Cloudflared binary
+    /usr/local/bin/cloudflared r,
 
-    # Access required for service functionality
-    /usr/bin/myprogram r,
-    /bin/bash rix,
-    /bin/echo ix,
-    /etc/passwd r,
+    # Cloudflared configuration
+    /etc/cloudflared/** r,
+
+    # Network access required for tunnel operation
+    network inet stream,
+    network inet6 stream,
+    network inet dgram,
+    network inet6 dgram,
+
+    # DNS resolution
+    /etc/resolv.conf r,
+    /etc/hosts r,
+    /etc/nsswitch.conf r,
+
+    # TLS certificates
+    /etc/ssl/certs/** r,
+    /usr/share/ca-certificates/** r,
+
+    # Proc access for network operations
+    @{PROC}/sys/net/** r,
+
+    # Standard I/O
+    /dev/stdout w,
+    /dev/stderr w,
     /dev/tty rw,
+    /dev/null rw,
   }
 }
