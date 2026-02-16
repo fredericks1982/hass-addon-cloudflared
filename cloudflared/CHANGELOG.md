@@ -3,7 +3,7 @@
 ## 2026.2.0
 
 - Bump cloudflared to 2026.2.0
-- Drop i386 architecture support (no longer supported by Home Assistant builder)
+- Drop i386, armhf, and armv7 architecture support (no longer supported by Home Assistant builder)
 
 ## 2026.1.2
 

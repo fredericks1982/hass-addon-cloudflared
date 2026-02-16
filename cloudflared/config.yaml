@@ -4,8 +4,6 @@ version: "2026.2.0"
 slug: cloudflared
 description: Client for Cloudflare Tunnel
 arch:
-  - armhf
-  - armv7
   - aarch64
   - amd64
 url: "https://github.com/fredericks1982/hass-addon-cloudflared"

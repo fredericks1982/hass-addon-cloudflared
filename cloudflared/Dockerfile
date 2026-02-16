@@ -13,8 +13,6 @@ RUN \
 RUN \
     CLOUDFLARED_ARCH=$(case "${BUILD_ARCH}" in \
         "amd64")  echo "amd64" ;; \
-        "armhf")  echo "arm" ;; \
-        "armv7")  echo "arm" ;; \
         "aarch64") echo "arm64" ;; \
         *) echo "unsupported" ;; \
     esac) && \
