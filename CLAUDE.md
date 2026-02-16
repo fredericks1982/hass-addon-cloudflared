@@ -72,8 +72,9 @@ VSCode tasks in `.vscode/tasks.json` provide three one-click actions for the `cl
 | **Start Home Assistant** | Runs `supervisor_run` (do this first) |
 | **Start Addon** | Stops then starts `local_cloudflared`; tails its Docker logs |
 | **Rebuild and Start Addon** | Rebuilds the image, starts, and tails logs |
+| **Local Test** | Runs `scripts/local-test.sh` (comments out `image:`, rebuilds, tails logs, restores on exit) |
 
-**Important:** While developing locally, comment out the `image:` key in `cloudflared/config.yaml` so Supervisor builds from the local Dockerfile instead of pulling the published image. Remember to restore it before merging to `main`.
+**Local testing:** Run `scripts/local-test.sh` inside the devcontainer. It comments out the `image:` key in `config.yaml`, rebuilds and starts the addon, and tails the logs. Press Ctrl+C when done — the script restores `config.yaml` automatically via a trap. A "Local Test" VSCode task is also available in the command palette.
 
 ## Architecture Overview
 
@@ -81,8 +82,8 @@ This is a single-addon repository. Everything addon-related lives under `cloudfl
 
 ```
 cloudflared/
-├── Dockerfile          # Pulls tempio + cloudflared binary; copies rootfs
-├── build.yaml          # Base images per arch; tempio version; OCI labels
+├── Dockerfile          # Pulls cloudflared binary; copies rootfs
+├── build.yaml          # Base images per arch; OCI labels
 ├── config.yaml         # HA addon manifest: version, schema, options, image
 ├── rootfs/
 │   └── etc/
@@ -99,8 +100,6 @@ cloudflared/
 
 **Process supervision:** The container runs under [s6-overlay](https://github.com/just-containers/s6-overlay). The `run` script is the entry point; it reads the token via `bashio::config`, then `exec`s `cloudflared tunnel run`. If the process exits with a non-zero code the `finish` script halts the container (Supervisor's watchdog will restart it).
 
-**Templating:** [tempio](https://github.com/home-assistant/tempio) is installed in the image (version pinned in `build.yaml`) but is not currently used by this addon. It is available if config-file templating is needed in the future.
-
 **Arch mapping in the Dockerfile:** Home Assistant build arches do not match Cloudflare's release naming. The Dockerfile maps them:
 
 | HA arch | Cloudflare binary suffix |
@@ -113,14 +112,15 @@ cloudflared/
 1. Check https://github.com/cloudflare/cloudflared/releases/ to retrieve the latest cloudflared version.
 2. Prompt the user for confirmation on which version to upgrade to.
 3. Switch to the `future` branch.
-4. Update the cloudflared download URL version in `cloudflared/Dockerfile` (the `curl` line).
+4. Update the `CLOUDFLARED_VERSION` build arg default in `cloudflared/Dockerfile`.
 5. Update `version` in `cloudflared/config.yaml` to match. Use CalVer: `YYYY.MM.MICRO` (e.g. `2025.6.0`).
 6. Add a changelog entry in `cloudflared/CHANGELOG.md`.
 7. Commit, push, and verify CI passes.
-8. Create a PR from `future` → `main` using `gh pr create --base main --head future`. Wait for CI to pass, then merge with `gh pr merge --squash`. This triggers the real build and publishes the image. **Do not delete the `future` branch** — it is a persistent branch used for all version-bump work.
-9. Create a git tag matching the version, push it, and open a GitHub release at `https://github.com/fredericks1982/hass-addon-cloudflared/releases`. Include a link to the changelog in the release notes:
-   ```
-   ## Full Changelog
-   See [CHANGELOG.md](cloudflared/CHANGELOG.md) for complete details.
-   ```
-10. Sync `future` with `main` to keep them aligned: `git checkout future && git merge main --no-edit && git push origin future`. This ensures both branches have identical content for the next release cycle.
+8. *(Optional but recommended)* Run `scripts/local-test.sh` in the devcontainer to verify the tunnel connects and check logs for errors. Press Ctrl+C when done.
+9. Create a PR from `future` → `main` using `gh pr create --base main --head future`. Wait for CI to pass, then merge with `gh pr merge --squash`. This triggers the real build and publishes the image. **Do not delete the `future` branch** — it is a persistent branch used for all version-bump work.
+10. Create a git tag matching the version, push it, and open a GitHub release at `https://github.com/fredericks1982/hass-addon-cloudflared/releases`. Include a link to the changelog in the release notes:
+    ```
+    ## Full Changelog
+    See [CHANGELOG.md](cloudflared/CHANGELOG.md) for complete details.
+    ```
+11. Sync `future` with `main` to keep them aligned: `git checkout future && git merge main --no-edit && git push origin future`. This ensures both branches have identical content for the next release cycle.

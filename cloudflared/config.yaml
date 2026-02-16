@@ -16,6 +16,3 @@ options:
 schema:
   token: "str"
 panel_icon: mdi:router-network
-
-# Improve the add-on security score
-#auth_api: true

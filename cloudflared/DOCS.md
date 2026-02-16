@@ -43,7 +43,7 @@ This is the Cloudflare Tunnel token and is required for the tunnel to authentica
 
 To obtain a token:
 1. Log into the [Cloudflare Zero Trust Dashboard](https://one.dash.cloudflare.com/) and select your account
-2. Navigate to Networks > Tunnels
+2. Navigate to _Networks > Connectors_
 3. Create a new tunnel or select and edit an existing one
 4. Copy the token provided in the tunnel configuration. The token is mentioned in the page section "Install and run a connector" and is the long string in the form _'aqLhIpotWQ...'_ or similar.
 

@@ -2,14 +2,9 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
-# Install tempio
-ARG TEMPIO_VERSION BUILD_ARCH
-RUN \
-    curl -sSLf -o /usr/bin/tempio \
-    "https://github.com/home-assistant/tempio/releases/download/${TEMPIO_VERSION}/tempio_${BUILD_ARCH}" && \
-    chmod +x /usr/bin/tempio
-
 # Install Cloudflared based on architecture
+ARG BUILD_ARCH
+ARG CLOUDFLARED_VERSION="2026.2.0"
 RUN \
     CLOUDFLARED_ARCH=$(case "${BUILD_ARCH}" in \
         "amd64")  echo "amd64" ;; \
@@ -18,7 +13,7 @@ RUN \
     esac) && \
     if [ "$CLOUDFLARED_ARCH" != "unsupported" ]; then \
         curl -sSL -o /usr/local/bin/cloudflared \
-            "https://github.com/cloudflare/cloudflared/releases/download/2026.2.0/cloudflared-linux-${CLOUDFLARED_ARCH}" && \
+            "https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-${CLOUDFLARED_ARCH}" && \
         chmod +x /usr/local/bin/cloudflared; \
     else \
         echo "Unsupported architecture: ${BUILD_ARCH}" && exit 1; \
@@ -33,5 +28,3 @@ WORKDIR /
 # Disable autoupdate and prefer IPv4 by default
 ENV NO_AUTOUPDATE=true \
     TUNNEL_EDGE_IP_VERSION=4
-
-#ENTRYPOINT ["/usr/local/bin/cloudflared" "--no-autoupdate"]
