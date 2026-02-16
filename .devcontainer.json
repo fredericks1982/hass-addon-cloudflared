@@ -5,7 +5,7 @@
     "7123:8123",
     "7357:4357"
   ],
-  "postStartCommand": "bash devcontainer_bootstrap",
+  "postStartCommand": "mount --make-shared / 2>/dev/null; sed -i 's|/dev.json|/stable.json|' /etc/supervisor_scripts/common; bash devcontainer_bootstrap",
   "runArgs": [
     "-e",
     "GIT_EDITOR=code --wait",
@@ -20,10 +20,12 @@
     "esbenp.prettier-vscode",
     "ms-azuretools.vscode-docker",
     "GitHub.copilot",
-    "GitHub.copilot-chat"
+    "GitHub.copilot-chat",
+    "anthropic.claude-code"
   ],
   "mounts": [
-    "type=volume,target=/var/lib/docker"
+    "type=volume,target=/var/lib/docker",
+    "type=volume,target=/mnt/supervisor"
   ],
   "settings": {
     "terminal.integrated.profiles.linux": {
