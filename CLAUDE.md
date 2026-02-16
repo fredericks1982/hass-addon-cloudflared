@@ -25,7 +25,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 There is no local lint or build command. Both run exclusively in GitHub Actions:
 
 - **Lint** (`.github/workflows/lint.yaml`): runs `frenck/action-addon-linter` on each addon directory found by `home-assistant/actions/helpers/find-addons`, then runs `shellcheck` on every file under `rootfs/etc/services.d/`.
-- **Build** (`.github/workflows/builder.yaml`): triggered only when one of the *monitored files* (`build.yaml`, `config.yaml`, `Dockerfile`, or anything under `rootfs/`) changes. Builds all five architectures (`aarch64`, `amd64`, `armhf`, `armv7`, `i386`) using `home-assistant/builder`. On `main` push the image is published to `ghcr.io/fredericks1982/{arch}-addon-cloudflared`; on PRs the build uses `--test` only (no publish).
+- **Build** (`.github/workflows/builder.yaml`): triggered only when one of the *monitored files* (`build.yaml`, `config.yaml`, `Dockerfile`, or anything under `rootfs/`) changes. Builds both supported architectures (`aarch64`, `amd64`) using `home-assistant/builder`. On `main` push the image is published to `ghcr.io/fredericks1982/{arch}-addon-cloudflared`; on PRs the build uses `--test` only (no publish).
+
+**Branch Protection:** The `main` branch requires PRs with passing CI checks (Lint, Build) before merging. Admins can bypass in emergencies. Tags and releases are unaffected.
 
 ## Local Development (Devcontainer)
 
@@ -72,9 +74,6 @@ cloudflared/
 | HA arch | Cloudflare binary suffix |
 |---|---|
 | amd64 | amd64 |
-| i386 | 386 |
-| armhf | arm |
-| armv7 | arm |
 | aarch64 | arm64 |
 
 ## Releasing / Updating Cloudflared
@@ -86,7 +85,7 @@ cloudflared/
 5. Update `version` in `cloudflared/config.yaml` to match. Use CalVer: `YYYY.MM.MICRO` (e.g. `2025.6.0`).
 6. Add a changelog entry in `cloudflared/CHANGELOG.md`.
 7. Commit, push, and verify CI passes.
-8. Merge `future` → `main` (this triggers the real build and publishes the image). **Do not delete the `future` branch** — it is a persistent branch used for all version-bump work.
+8. Create a PR from `future` → `main` using `gh pr create --base main --head future`. Wait for CI to pass, then merge with `gh pr merge --squash`. This triggers the real build and publishes the image. **Do not delete the `future` branch** — it is a persistent branch used for all version-bump work.
 9. Create a git tag matching the version, push it, and open a GitHub release at `https://github.com/fredericks1982/hass-addon-cloudflared/releases`. Include a link to the changelog in the release notes:
    ```
    ## Full Changelog
