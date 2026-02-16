@@ -8,7 +8,6 @@ arch:
   - armv7
   - aarch64
   - amd64
-  - i386
 url: "https://github.com/fredericks1982/hass-addon-cloudflared"
 image: "ghcr.io/fredericks1982/{arch}-addon-cloudflared"
 startup: system
