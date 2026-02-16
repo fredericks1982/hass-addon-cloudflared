@@ -91,3 +91,4 @@ cloudflared/
    ## Full Changelog
    See [CHANGELOG.md](cloudflared/CHANGELOG.md) for complete details.
    ```
+10. Sync `future` with `main` to keep them aligned: `git checkout future && git merge main --no-edit && git push origin future`. This ensures both branches have identical content for the next release cycle.
