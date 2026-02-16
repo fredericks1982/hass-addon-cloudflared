@@ -19,6 +19,38 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 5. Squash-merge the PR using `gh pr merge <number> --squash`.
 6. Delete the remote branch: `git push origin --delete <branch>`.
 7. Switch to `main`, pull, and force-delete the local branch: `git branch -D <branch>`.
+8. Sync the `future` branch with `main`: `git checkout future && git merge main --no-edit && git push origin future && git checkout main`.
+
+### Branch Strategy
+
+This repository uses two persistent branches:
+
+| Branch | Purpose |
+|--------|---------|
+| `main` | Production branch. All PRs target this branch. Protected (requires PR + CI). |
+| `future` | Staging branch for version-bump work (releases only). Unprotected. |
+
+**Key rules:**
+- Feature branches (docs, fixes, etc.) → branch from `main`, merge to `main`
+- Release work → done directly on `future`, then PR to `main`
+- **After ANY merge to `main`**, sync `future` to keep them aligned
+
+**Handling conflicts when syncing `future`:**
+
+If `future` has uncommitted release work when you need to sync:
+```bash
+git checkout future
+git merge main           # Resolve conflicts if any
+git push origin future
+```
+
+If starting a new release and `future` is behind `main`:
+```bash
+git checkout future
+git merge main --no-edit  # Bring in latest changes first
+git push origin future
+# Now start the release work
+```
 
 ## CI — Lint & Build
 
