@@ -111,13 +111,13 @@ cloudflared/
 
 1. Check https://github.com/cloudflare/cloudflared/releases/ to retrieve the latest cloudflared version.
 2. Prompt the user for confirmation on which version to upgrade to.
-3. Switch to the `future` branch.
+3. Switch to the `future` branch (ensure it is synced with `main` first).
 4. Update the `CLOUDFLARED_VERSION` build arg default in `cloudflared/Dockerfile`.
 5. Update `version` in `cloudflared/config.yaml` to match. Use CalVer: `YYYY.MM.MICRO` (e.g. `2025.6.0`).
 6. Add a changelog entry in `cloudflared/CHANGELOG.md`.
-7. Commit, push, and verify CI passes.
-8. *(Optional but recommended)* Run `scripts/local-test.sh` in the devcontainer to verify the tunnel connects and check logs for errors. Press Ctrl+C when done.
-9. Create a PR from `future` → `main` using `gh pr create --base main --head future`. Wait for CI to pass, then merge with `gh pr merge --squash`. This triggers the real build and publishes the image. **Do not delete the `future` branch** — it is a persistent branch used for all version-bump work.
+7. Commit and push to `future`.
+8. **Stop and wait for the user to perform local testing.** The user will manually run `scripts/local-test.sh` in the devcontainer to verify the tunnel connects and check logs for errors. Do **not** proceed to the PR until the user confirms that local testing has passed.
+9. Once the user confirms local testing is successful, create a PR from `future` → `main` using `gh pr create --base main --head future`. Wait for CI to pass, then merge with `gh pr merge --squash`. This triggers the real build and publishes the image. **Do not delete the `future` branch** — it is a persistent branch used for all version-bump work.
 10. Create a git tag matching the version, push it, and open a GitHub release at `https://github.com/fredericks1982/hass-addon-cloudflared/releases`. Include a link to the changelog in the release notes:
     ```
     ## Full Changelog

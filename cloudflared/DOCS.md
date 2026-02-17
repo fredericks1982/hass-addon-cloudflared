@@ -1,9 +1,9 @@
-# Home Assistant Add-on: Cloudflare Tunnel Client
+# Home Assistant App: Cloudflare Tunnel Client
 
 *Cloudflare Tunnel* (formerly Argo Tunnel) provides a secure way to connect to your
 services without exposing an external IP address.
 
-This add-on establishes an encrypted tunnel between your infrastructure and Cloudflare's
+This app establishes an encrypted tunnel between your infrastructure and Cloudflare's
 edge, routing traffic through this tunnel rather than over the public internet. This
 allows you to securely expose web servers, APIs, and other services to the internet
 without opening inbound ports in your firewall, protecting your traffic from attacks and
@@ -11,31 +11,34 @@ simplifying (a lot) the management of your inbound traffic.
 
 ## Installation
 
-The installation of this add-on is straightforward and similar to installing any other
-Home Assistant add-on.
+The installation of this app is straightforward and similar to installing any other
+Home Assistant app.
 
-1. Add the repository URL to your Home Assistant add-on store:
+1. Add the repository URL to your Home Assistant app store:
    ```
    https://github.com/fredericks1982/hass-addon-cloudflared
    ```
 
-2. Find the "Cloudflare Tunnel Client" add-on in the list of available add-ons, within the "Cloudflare Tunnel add-on" repository.
+2. Find the "Cloudflare Tunnel Client" app in the list of available apps, within the "Cloudflare Tunnel app" repository.
 
-3. Click the "Install" button to install the add-on. This will take a while.
+3. Click the "Install" button to install the app. This will take a while.
 
 4. Switch to the "Configuration" tab and set the Cloudflare Tunnel client token (see the section "Configuration" below).
 
-5. Before starting the add-on, consider enabling:
-   - The "Watchdog" option to automatically restart the tunnel if it crashes.
-   - The "Start on boot" option to automatically start the tunnel during system boot.
+5. Before starting the app, consider enabling the "Start on boot" option to automatically start the tunnel during system boot.
 
-6. Start the add-on.
+   > **Note:** The "Watchdog" option is not supported by the Cloudflare Tunnel daemon
+   > and has no effect. The app already handles process failures through its built-in
+   > service supervision (s6-overlay), which halts the container on errors so that
+   > the Supervisor can restart it.
 
-7. Check the logs of the add-on to verify everything is working correctly.
+6. Start the app.
+
+7. Check the logs of the app to verify everything is working correctly.
 
 ## Configuration
 
-**Note**: _Remember to restart the add-on when the configuration is changed._
+**Note**: _Remember to restart the app when the configuration is changed._
 
 ### Option: `token`
 
