@@ -1,5 +1,9 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2026.2.2
+
+- Disable AppArmor profile to fix boot loop / segfault (issue #41)
+
 ## 2026.2.1
 
 - Re-enable AppArmor profile with proper cloudflared-specific permissions
