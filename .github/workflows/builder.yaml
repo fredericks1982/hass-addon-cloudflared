@@ -28,6 +28,7 @@ jobs:
 
       - name: Get changed files
         id: changed_files
+        if: github.event_name != 'workflow_dispatch'
         uses: jitterbit/get-changed-files@v1
 
       - name: Find add-on directories
@@ -40,6 +41,14 @@ jobs:
           ADDONS: ${{ steps.addons.outputs.addons }}
           CHANGED_FILES: ${{ steps.changed_files.outputs.all }}
         run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "Manual trigger: building all add-ons";
+            addons=$(echo ${ADDONS} | sed 's/ /","/g')
+            echo "changed=true" >> $GITHUB_OUTPUT;
+            echo "addons=[\"${addons}\"]" >> $GITHUB_OUTPUT;
+            exit 0
+          fi
+
           declare -a changed_addons
           for addon in ${ADDONS}; do
             if [[ "${CHANGED_FILES}" =~ $addon ]]; then
