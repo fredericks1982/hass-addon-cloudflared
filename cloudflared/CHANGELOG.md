@@ -1,5 +1,10 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2026.4.0
+
+- Bump cloudflared to 2026.3.0
+- Restrict default workflow permissions in builder workflow (security hardening)
+
 ## 2026.2.2
 
 - Disable AppArmor profile to fix boot loop / segfault (issue #41)
