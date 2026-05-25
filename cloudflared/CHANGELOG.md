@@ -1,5 +1,9 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2026.5.0
+
+- Bump cloudflared to 2026.5.1
+
 ## 2026.4.0
 
 - Bump cloudflared to 2026.3.0
