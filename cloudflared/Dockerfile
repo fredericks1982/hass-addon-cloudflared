@@ -4,7 +4,7 @@ FROM $BUILD_FROM
 
 # Install Cloudflared based on architecture
 ARG BUILD_ARCH
-ARG CLOUDFLARED_VERSION="2026.5.1"
+ARG CLOUDFLARED_VERSION="2026.7.3"
 RUN \
     CLOUDFLARED_ARCH=$(case "${BUILD_ARCH}" in \
         "amd64")  echo "amd64" ;; \
