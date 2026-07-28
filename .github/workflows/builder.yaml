@@ -1,7 +1,6 @@
 name: Builder
 
 env:
-  BUILD_ARGS: "--test"
   MONITORED_FILES: "build.yaml config.yaml Dockerfile rootfs"
 
 on:
@@ -75,16 +74,23 @@ jobs:
           fi
   build:
     needs: init
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     if: needs.init.outputs.changed == 'true'
     name: Build ${{ matrix.arch }} ${{ matrix.addon }} add-on
     strategy:
+      fail-fast: false
       matrix:
         addon: ${{ fromJson(needs.init.outputs.changed_addons) }}
         arch: ["aarch64", "amd64"]
+        include:
+          - arch: aarch64
+            os: ubuntu-24.04-arm
+          - arch: amd64
+            os: ubuntu-24.04
     permissions:
       contents: read
       packages: write
+      id-token: write
 
     steps:
       - name: Check out repository
@@ -98,40 +104,44 @@ jobs:
 
       - name: Check if add-on should be built
         id: check
+        env:
+          ADDON: ${{ matrix.addon }}
+          ARCH: ${{ matrix.arch }}
+          INFO_ARCHITECTURES: ${{ steps.info.outputs.architectures }}
+          INFO_IMAGE: ${{ steps.info.outputs.image }}
+          INFO_VERSION: ${{ steps.info.outputs.version }}
         run: |
-          if [[ "${{ steps.info.outputs.image }}" == "null" ]]; then
-            echo "Image property is not defined, skipping build"
-            echo "build_arch=false" >> $GITHUB_OUTPUT;
-          elif [[ "${{ steps.info.outputs.architectures }}" =~ ${{ matrix.arch }} ]]; then
-            echo "build_arch=true" >> $GITHUB_OUTPUT;
-            echo "image=$(echo ${{ steps.info.outputs.image }} | cut -d'/' -f3)" >> $GITHUB_OUTPUT;
-            if [[ -z "${{ github.head_ref }}" ]] && [[ "${{ github.event_name }}" == "push" ]]; then
-                echo "BUILD_ARGS=" >> $GITHUB_ENV;
-            fi
-          else
-            echo "${{ matrix.arch }} is not a valid arch for ${{ matrix.addon }}, skipping build";
-            echo "build_arch=false" >> $GITHUB_OUTPUT;
-          fi
+          image=$(tr -d '"' <<< "${INFO_IMAGE}")
 
-      - name: Login to GitHub Container Registry
-        if: env.BUILD_ARGS != '--test'
-        uses: docker/login-action@v4.5.1
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          if [[ "${image}" == "null" || -z "${image}" ]]; then
+            echo "Image property is not defined, skipping build"
+            echo "build_arch=false" >> "$GITHUB_OUTPUT"
+          elif [[ "${INFO_ARCHITECTURES}" =~ ${ARCH} ]]; then
+            echo "build_arch=true" >> "$GITHUB_OUTPUT"
+            echo "image=${image//\{arch\}/${ARCH}}" >> "$GITHUB_OUTPUT"
+            echo "version=$(tr -d '"' <<< "${INFO_VERSION}")" >> "$GITHUB_OUTPUT"
+            echo "build_from=$(yq e -N -M ".build_from.\"${ARCH}\"" "./${ADDON}/build.yaml")" >> "$GITHUB_OUTPUT"
+          else
+            echo "${ARCH} is not a valid arch for ${ADDON}, skipping build"
+            echo "build_arch=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Build ${{ matrix.addon }} add-on
         if: steps.check.outputs.build_arch == 'true'
-        uses: home-assistant/builder@2026.06.0
+        uses: home-assistant/builder/actions/build-image@2026.06.0
         with:
-          args: |
-            ${{ env.BUILD_ARGS }} \
-            --${{ matrix.arch }} \
-            --target /data/${{ matrix.addon }} \
-            --image "${{ steps.check.outputs.image }}" \
-            --docker-hub "ghcr.io/${{ github.repository_owner }}" \
-            --addon
+          arch: ${{ matrix.arch }}
+          build-args: |
+            BUILD_FROM=${{ steps.check.outputs.build_from }}
+          cache-gha-scope: ${{ matrix.addon }}
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+          context: "./${{ matrix.addon }}"
+          image: ${{ steps.check.outputs.image }}
+          image-tags: |
+            ${{ steps.check.outputs.version }}
+            latest
+          push: ${{ github.event_name == 'push' }}
+          version: ${{ steps.check.outputs.version }}
 
   build-status:
     name: Build status
