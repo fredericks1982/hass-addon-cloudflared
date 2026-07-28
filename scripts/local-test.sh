@@ -54,8 +54,8 @@ echo ""
 echo "Rebuilding and starting ${ADDON_SLUG}..."
 echo ""
 
-ha addons rebuild "${ADDON_SLUG}"
-ha addons start "${ADDON_SLUG}"
+ha apps rebuild "${ADDON_SLUG}"
+ha apps start "${ADDON_SLUG}"
 
 echo ""
 echo "Tailing addon logs (Ctrl+C to stop and restore config.yaml)..."
