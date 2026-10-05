@@ -1,5 +1,9 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2026.9.0
+
+- Map the app configuration folder read-only at `/config`, so a private CA certificate can be referenced by the Cloudflare Tunnel "CA Pool" origin setting (no change for existing setups)
+
 ## 2026.8.0
 
 - Bump cloudflared to 2026.8.3

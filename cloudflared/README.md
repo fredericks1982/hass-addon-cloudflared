@@ -22,3 +22,4 @@ Key features:
 - Easy setup: No need for complex firewall rules or IP whitelisting
 - Flexible: Can expose HTTP, TCP, and UDP services
 - Scalable: Supports load balancing and high availability configurations
+- Private CA support: HTTPS origins signed by a private CA can be trusted via the tunnel "CA Pool" setting
