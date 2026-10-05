@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Cloudflare Tunnel client
-version: "2026.7.0"
+version: "2026.9.0"
 slug: cloudflared
 description: Client for Cloudflare Tunnel
 arch:
@@ -11,6 +11,11 @@ image: "ghcr.io/fredericks1982/{arch}-addon-cloudflared"
 startup: system
 host_network: true
 init: false
+map:
+  # "addon_config" is deprecated in favor of "app_config" (Supervisor >= 2026.07.1).
+  # Kept for compatibility with older Supervisor versions: see CLAUDE.md "Known deprecations".
+  - type: addon_config
+    read_only: true
 options:
   token: ""
 schema:

@@ -50,6 +50,34 @@ To obtain a token:
 3. Create a new tunnel or select and edit an existing one
 4. Copy the token provided in the tunnel configuration. The token is mentioned in the page section "Install and run a connector" and is the long string in the form _'aqLhIpotWQ...'_ or similar.
 
+## Optional: private CA for HTTPS origins (CA Pool)
+
+If a service published through the tunnel uses HTTPS with a certificate signed by a
+private certificate authority (CA), cloudflared must be told to trust that CA. This is
+done with the *CA Pool* origin parameter of the route, which expects the path of a
+certificate file inside the app container.
+
+1. Copy the CA certificate (a `.pem` or `.crt` file containing one or more root CA
+   certificates) into this app's configuration folder on the Home Assistant host: the
+   folder whose name ends in `_cloudflared` inside `/addon_configs/` (shown as
+   `/app_configs/` by some versions of Home Assistant and of the file-access apps,
+   such as Samba or SSH). For example: `/addon_configs/<id>_cloudflared/origin-ca.crt`.
+2. In the Cloudflare dashboard, go to *Networking > Tunnels*, select your tunnel and
+   open the *Routes* tab.
+3. Select *Edit route* on the published application, expand *Additional application
+   settings* and, under *TLS*, set *CA Pool* to `/config/origin-ca.crt`.
+4. If the certificate presented by the origin is not issued for the hostname used in
+   the service URL (for example, when the service URL uses an IP address), also set
+   *Origin Server Name* to the name contained in the certificate.
+5. Keep *Disable TLS certificate verification* off, then select *Save changes*.
+
+Notes:
+- The folder is mounted read-only at `/config` inside the app container.
+- The folder is empty by default and is ignored unless a route references a file in it,
+  so existing setups are not affected.
+- The CA certificates are added to cloudflared's default trust pool: origins with
+  publicly trusted certificates keep working.
+
 ## Changelog & Releases
 
 This repository keeps a change log using [GitHub's releases](https://github.com/fredericks1982/hass-addon-cloudflared/releases) functionality.
