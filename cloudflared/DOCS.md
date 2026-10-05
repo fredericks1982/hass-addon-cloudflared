@@ -50,6 +50,28 @@ To obtain a token:
 3. Create a new tunnel or select and edit an existing one
 4. Copy the token provided in the tunnel configuration. The token is mentioned in the page section "Install and run a connector" and is the long string in the form _'aqLhIpotWQ...'_ or similar.
 
+## Optional: private CA for HTTPS origins (CA Pool)
+
+If a service published through the tunnel uses HTTPS with a certificate signed by a
+private (self-managed) certificate authority, cloudflared must be told which CA to
+trust. This is done with the *CA Pool* setting of the route in the Cloudflare Zero
+Trust dashboard, which expects the path of a certificate file inside the app container.
+
+1. Copy the CA certificate (PEM format) into this app's configuration folder on the
+   Home Assistant host: the folder whose name ends in `_cloudflared` inside
+   `/addon_configs/` (reachable, for example, through the Samba or SSH apps). For
+   example: `/addon_configs/<id>_cloudflared/origin-ca.crt`.
+2. In the Zero Trust dashboard, edit the route (public hostname) of the tunnel and,
+   under *Additional application settings > TLS*, set *CA Pool* to
+   `/config/origin-ca.crt`.
+3. If the hostname in the origin certificate does not match the host used in the
+   service URL, also set *Origin Server Name* to the name in the certificate.
+
+Notes:
+- The folder is mounted read-only at `/config` inside the app container.
+- The folder is empty by default and is ignored unless a route references a file in it,
+  so existing setups are not affected.
+
 ## Changelog & Releases
 
 This repository keeps a change log using [GitHub's releases](https://github.com/fredericks1982/hass-addon-cloudflared/releases) functionality.
