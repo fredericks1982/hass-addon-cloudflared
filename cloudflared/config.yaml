@@ -12,6 +12,8 @@ startup: system
 host_network: true
 init: false
 map:
+  # "addon_config" is deprecated in favor of "app_config" (Supervisor >= 2026.07.1).
+  # Kept for compatibility with older Supervisor versions: see CLAUDE.md "Known deprecations".
   - type: addon_config
     read_only: true
 options:

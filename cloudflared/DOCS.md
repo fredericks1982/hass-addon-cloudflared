@@ -53,24 +53,30 @@ To obtain a token:
 ## Optional: private CA for HTTPS origins (CA Pool)
 
 If a service published through the tunnel uses HTTPS with a certificate signed by a
-private (self-managed) certificate authority, cloudflared must be told which CA to
-trust. This is done with the *CA Pool* setting of the route in the Cloudflare Zero
-Trust dashboard, which expects the path of a certificate file inside the app container.
+private certificate authority (CA), cloudflared must be told to trust that CA. This is
+done with the *CA Pool* origin parameter of the route, which expects the path of a
+certificate file inside the app container.
 
-1. Copy the CA certificate (PEM format) into this app's configuration folder on the
-   Home Assistant host: the folder whose name ends in `_cloudflared` inside
-   `/addon_configs/` (reachable, for example, through the Samba or SSH apps). For
-   example: `/addon_configs/<id>_cloudflared/origin-ca.crt`.
-2. In the Zero Trust dashboard, edit the route (public hostname) of the tunnel and,
-   under *Additional application settings > TLS*, set *CA Pool* to
-   `/config/origin-ca.crt`.
-3. If the hostname in the origin certificate does not match the host used in the
-   service URL, also set *Origin Server Name* to the name in the certificate.
+1. Copy the CA certificate (a `.pem` or `.crt` file containing one or more root CA
+   certificates) into this app's configuration folder on the Home Assistant host: the
+   folder whose name ends in `_cloudflared` inside `/addon_configs/` (shown as
+   `/app_configs/` by some versions of Home Assistant and of the file-access apps,
+   such as Samba or SSH). For example: `/addon_configs/<id>_cloudflared/origin-ca.crt`.
+2. In the Cloudflare dashboard, go to *Networking > Tunnels*, select your tunnel and
+   open the *Routes* tab.
+3. Select *Edit route* on the published application, expand *Additional application
+   settings* and, under *TLS*, set *CA Pool* to `/config/origin-ca.crt`.
+4. If the certificate presented by the origin is not issued for the hostname used in
+   the service URL (for example, when the service URL uses an IP address), also set
+   *Origin Server Name* to the name contained in the certificate.
+5. Keep *Disable TLS certificate verification* off, then select *Save changes*.
 
 Notes:
 - The folder is mounted read-only at `/config` inside the app container.
 - The folder is empty by default and is ignored unless a route references a file in it,
   so existing setups are not affected.
+- The CA certificates are added to cloudflared's default trust pool: origins with
+  publicly trusted certificates keep working.
 
 ## Changelog & Releases
 

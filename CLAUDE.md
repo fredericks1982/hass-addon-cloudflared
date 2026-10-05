@@ -107,6 +107,10 @@ cloudflared/
 | amd64 | amd64 |
 | aarch64 | arm64 |
 
+## Known deprecations
+
+- **`map` type `addon_config` in `cloudflared/config.yaml`** — deprecated by the Supervisor in favor of `app_config` (alias since Supervisor `2026.07.1`; using `addon_config` only logs a warning). It is kept on purpose: on a Supervisor older than `2026.07.1` the type `app_config` is unknown and the whole add-on config would be rejected. **When the Supervisor drops `addon_config`** (or the add-on linter starts rejecting it), replace it with `app_config` keeping `read_only: true` and no `path` (the mount target stays `/config`). No data migration is needed: both types mount the same per-add-on folder on the host. Tracked in the GitHub issue "Replace deprecated map type addon_config with app_config".
+
 ## Releasing / Updating Cloudflared
 
 1. Check https://github.com/cloudflare/cloudflared/releases/ to retrieve the latest cloudflared version.
