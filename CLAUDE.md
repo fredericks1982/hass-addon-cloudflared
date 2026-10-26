@@ -58,6 +58,7 @@ There is no local lint or build command. Both run exclusively in GitHub Actions:
 
 - **Lint** (`.github/workflows/lint.yaml`): runs `frenck/action-addon-linter` on each addon directory found by `home-assistant/actions/helpers/find-addons`, then runs `shellcheck` on every file under `rootfs/etc/services.d/`.
 - **Build** (`.github/workflows/builder.yaml`): triggered only when one of the *monitored files* (`build.yaml`, `config.yaml`, `Dockerfile`, or anything under `rootfs/`) changes. Builds both supported architectures (`aarch64`, `amd64`) using `home-assistant/builder`. On `main` push the image is published to `ghcr.io/fredericks1982/{arch}-addon-cloudflared`; on PRs the build uses `--test` only (no publish).
+- **Release check** (`.github/workflows/check-cloudflared.yaml`): runs daily (and on demand). Compares `CLOUDFLARED_VERSION` in the Dockerfile with the latest `cloudflare/cloudflared` release and opens an issue labelled `dependencies` when a newer version exists (flagging releases whose notes mention security fixes). It closes issues for releases that a newer one has superseded. Dependabot can't track this binary because it is pinned via a Dockerfile `ARG`.
 
 **Branch Protection:** The `main` branch requires PRs with passing CI checks (Lint, Build) before merging. Admins can bypass in emergencies. Tags and releases are unaffected.
 
