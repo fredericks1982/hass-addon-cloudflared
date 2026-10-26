@@ -1,0 +1,75 @@
+name: Check cloudflared release
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check for new cloudflared release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v7.0.1
+
+      - name: 🔍 Compare pinned and latest versions
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          current=$(sed -n 's/^ARG CLOUDFLARED_VERSION="\(.*\)"$/\1/p' cloudflared/Dockerfile)
+          if [ -z "$current" ]; then
+            echo "::error::Could not read CLOUDFLARED_VERSION from cloudflared/Dockerfile"
+            exit 1
+          fi
+
+          release=$(gh api repos/cloudflare/cloudflared/releases/latest)
+          latest=$(jq -r '.tag_name' <<< "$release")
+          url=$(jq -r '.html_url' <<< "$release")
+          echo "Pinned: $current, latest: $latest"
+
+          if [ "$latest" = "$current" ]; then
+            echo "Already up to date."
+            exit 0
+          fi
+
+          title="New cloudflared release: $latest"
+          prefix="New cloudflared release:"
+
+          # Close issues opened for releases that have since been superseded
+          gh issue list --state open --label dependencies --search "in:title \"$prefix\"" \
+            --json number,title --jq ".[] | select(.title != \"$title\") | .number" |
+            while read -r number; do
+              gh issue close "$number" --comment "Superseded by cloudflared $latest."
+            done
+
+          if gh issue list --state open --label dependencies --search "in:title \"$title\"" \
+            --json title --jq ".[].title" | grep -qxF "$title"; then
+            echo "Issue already open for $latest."
+            exit 0
+          fi
+
+          security=""
+          if jq -r '.body // ""' <<< "$release" | grep -qiE 'security|CVE-|vulnerab'; then
+            security="> [!WARNING]
+          > The release notes mention a security fix. Consider releasing promptly.
+          "
+          fi
+
+          cat > body.md <<EOF
+          A new cloudflared version is available.
+
+          - Pinned in \`cloudflared/Dockerfile\`: \`$current\`
+          - Latest upstream release: [\`$latest\`]($url)
+
+          $security
+          Follow the *Releasing / Updating Cloudflared* steps in \`CLAUDE.md\` to bump the add-on.
+          EOF
+
+          gh issue create --title "$title" --label dependencies --body-file body.md
