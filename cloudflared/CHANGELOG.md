@@ -1,5 +1,11 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2026.10.1
+
+- Bump cloudflared to 2026.10.4, which includes security fixes:
+  - Metrics server no longer exposes `/debug/vars`, which could leak the tunnel token to local processes (VULN-176088)
+  - Built with Go 1.27.3, including the fix for GO-2026-6600
+
 ## 2026.10.0
 
 - Bump cloudflared to 2026.10.0
