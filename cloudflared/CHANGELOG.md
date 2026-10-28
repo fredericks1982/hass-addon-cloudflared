@@ -1,5 +1,9 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2026.10.2
+
+- Bump cloudflared to 2026.10.5
+
 ## 2026.10.1
 
 - Bump cloudflared to 2026.10.4, which includes security fixes:
