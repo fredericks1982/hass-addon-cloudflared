@@ -3,6 +3,8 @@
 ## 2026.10.2
 
 - Bump cloudflared to 2026.10.5
+- Log the cloudflared version at startup
+- Pass the tunnel token via the `TUNNEL_TOKEN` environment variable instead of the command line, so it is not visible in the process list
 
 ## 2026.10.1
 
