@@ -11,6 +11,10 @@ declare client_token
 ## Get the user config options.
 client_token=$(bashio::config 'token')
 
+## Pass the token via the environment so it does not appear on the command line.
+export TUNNEL_TOKEN="${client_token}"
+
+bashio::log.info "$(cloudflared --version)"
 bashio::log.info "Starting the cloudflare tunnel daemon..."
 
 exec cloudflared tunnel \
@@ -18,4 +22,4 @@ exec cloudflared tunnel \
     --edge-ip-version 4 \
     --retries 7 \
     --config "/etc/cloudflared/cloudflared.yaml" \
-    run --token "${client_token}"
+    run
