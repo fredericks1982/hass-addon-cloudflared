@@ -1,5 +1,11 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2026.10.3
+
+- Bump cloudflared to 2026.10.7, which includes:
+  - Security fix: bump go-jose to v4.1.6 (VULN-184686)
+  - Fix a regression limiting concurrent HTTP/2 streams (TUN-11058)
+
 ## 2026.10.2
 
 - Bump cloudflared to 2026.10.5
