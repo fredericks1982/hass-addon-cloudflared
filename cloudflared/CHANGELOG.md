@@ -3,7 +3,7 @@
 ## 2026.11.0
 
 - Bump cloudflared to 2026.11.0, which includes:
-  - Security fix: Cloudflare Access protection could be bypassed using specially crafted URLs (VULN-170057)
+  - Hardening of path matching for tunnels that mix Access-protected and public paths on the same hostname (VULN-170057); typical Home Assistant setups are not affected
   - Built with Go 1.27.4
 
 ## 2026.10.3
