@@ -1,5 +1,11 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2026.11.0
+
+- Bump cloudflared to 2026.11.0, which includes:
+  - Hardening of path matching for tunnels that mix Access-protected and public paths on the same hostname (VULN-170057); typical Home Assistant setups are not affected
+  - Built with Go 1.27.4
+
 ## 2026.10.3
 
 - Bump cloudflared to 2026.10.7, which includes:
