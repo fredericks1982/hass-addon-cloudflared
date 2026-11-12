@@ -1,5 +1,11 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2026.11.0
+
+- Bump cloudflared to 2026.11.0, which includes:
+  - Security fix: Cloudflare Access protection could be bypassed using specially crafted URLs (VULN-170057)
+  - Built with Go 1.27.4
+
 ## 2026.10.3
 
 - Bump cloudflared to 2026.10.7, which includes:
