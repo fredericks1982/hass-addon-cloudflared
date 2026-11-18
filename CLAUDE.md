@@ -119,13 +119,23 @@ cloudflared/
 3. Switch to the `future` branch (ensure it is synced with `main` first).
 4. Update the `CLOUDFLARED_VERSION` build arg default in `cloudflared/Dockerfile`.
 5. Update `version` in `cloudflared/config.yaml` to match. Use CalVer: `YYYY.MM.MICRO` (e.g. `2025.6.0`).
-6. Add a changelog entry in `cloudflared/CHANGELOG.md`.
+6. Add a changelog entry in `cloudflared/CHANGELOG.md`, following *Writing release notes* below.
 7. Commit and push to `future`.
 8. **Stop and wait for the user to perform local testing.** The user will manually run `scripts/local-test.sh` in the devcontainer to verify the tunnel connects and check logs for errors. Do **not** proceed to the PR until the user confirms that local testing has passed.
 9. Once the user confirms local testing is successful, create a PR from `future` → `main` using `gh pr create --base main --head future`. Wait for CI to pass, then merge with `gh pr merge --squash`. This triggers the real build and publishes the image. **Do not delete the `future` branch** — it is a persistent branch used for all version-bump work.
-10. Create a git tag matching the version, push it, and open a GitHub release at `https://github.com/fredericks1982/hass-addon-cloudflared/releases`. Include a link to the changelog in the release notes:
+10. Create a git tag matching the version, push it, and open a GitHub release at `https://github.com/fredericks1982/hass-addon-cloudflared/releases`, following *Writing release notes* below. Include a link to the changelog in the release notes:
     ```
     ## Full Changelog
     See [CHANGELOG.md](cloudflared/CHANGELOG.md) for complete details.
     ```
 11. Sync `future` with `main` to keep them aligned: `git checkout future && git merge main --no-edit && git push origin future`. This ensures both branches have identical content for the next release cycle.
+
+### Writing release notes
+
+This applies to the changelog entry, the PR description and above all the GitHub release notes. Write them for a Home Assistant user running this add-on, not for cloudflared developers.
+
+- **Open with the verdict.** The first line must say plainly whether users should update right away (a real issue affects Home Assistant setups) or whether this is a routine update with no action needed.
+- **Judge each upstream change against the actual add-on, not in theory.** Before describing a fix, check whether it applies to how the add-on runs cloudflared: a token-based remotely managed tunnel started by the `run` script, with only the settings in `rootfs/etc/cloudflared/cloudflared.yaml`, no tracing, no metrics exposure, no quick tunnels, no Access configuration in the add-on. Read the upstream commit or advisory if the release notes are thin.
+- **Do not overstate.** If a security fix or bug fix does not apply to typical Home Assistant setups, describe it in soft terms (e.g. "dependency hardening") and say explicitly that typical Home Assistant setups are not affected, with a short reason. Never label it "Security fix" or recommend an urgent update in that case.
+- **When it does apply,** say what can go wrong for a Home Assistant user, who is affected and that they should update now.
+- Leave out upstream changes that cannot affect the add-on (Windows/macOS packaging, CI, quick tunnels), unless a user might reasonably ask about them.
