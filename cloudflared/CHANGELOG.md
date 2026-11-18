@@ -2,9 +2,11 @@
 
 ## 2026.11.1
 
+Routine update, no action needed.
+
 - Bump cloudflared to 2026.11.1, which includes:
-  - Security fix: bump OpenTelemetry to 1.47.0, fixing CVE-2026-128085 (VULN-187395)
-  - Reconnect cleanly when the account region changes (TUN-11062)
+  - Dependency hardening: OpenTelemetry bumped to 1.47.0, fixing CVE-2026-128085 (VULN-187395). Typical Home Assistant setups are not affected: the add-on does not configure tracing
+  - Reconnect cleanly when the account region changes (TUN-11062); only relevant for accounts using Cloudflare's regional services
 
 ## 2026.11.0
 
