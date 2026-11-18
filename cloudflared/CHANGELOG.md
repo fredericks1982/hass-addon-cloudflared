@@ -1,5 +1,11 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2026.11.1
+
+- Bump cloudflared to 2026.11.1, which includes:
+  - Security fix: bump OpenTelemetry to 1.47.0, fixing CVE-2026-128085 (VULN-187395)
+  - Reconnect cleanly when the account region changes (TUN-11062)
+
 ## 2026.11.0
 
 - Bump cloudflared to 2026.11.0, which includes:
