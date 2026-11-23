@@ -1,5 +1,13 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 2026.11.2
+
+Routine update, no action needed.
+
+- Bump cloudflared to 2026.11.2, which includes:
+  - Dependency hardening: `golang.org/x/net` and `golang.org/x/crypto` bumped to clear scanner findings (CVE-2026-78661, CVE-2026-97045, GO-2026-5932). Typical Home Assistant setups are not affected: the findings are in HTML parsing and OpenPGP code that cloudflared does not use
+  - Fix a rare decoding error when the start of a tunnel stream arrives split across packets (TUN-11362); it has not been seen with the standard cloudflared connector, so no visible change is expected
+
 ## 2026.11.1
 
 Routine update, no action needed.
